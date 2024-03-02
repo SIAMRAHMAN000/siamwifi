@@ -69,10 +69,8 @@ def main_menu():
             print("Byeee...")
             break
         else:
-            for _ in range(1):
-                time.sleep(0.5)
-            time.sleep(0.5)
-            os.system('clear') 
+            print("Invalid choice. Exiting...")
+            break
 
 if __name__ == "__main__":
     main_menu()
