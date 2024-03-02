@@ -1,45 +1,27 @@
 import os
 import time
 import random
-import subprocess
 
 # ANSI color escape codes
-CYAN = '\033[96m'
+COLORS = [
+    '\033[91m',  # Red
+    '\033[92m',  # Green
+    '\033[93m',  # Yellow
+    '\033[94m',  # Blue
+    '\033[95m',  # Magenta
+    '\033[96m',  # Cyan
+    '\033[97m'   # White
+]
+
 RESET_COLOR = '\033[0m'  # Reset color to default
-
-def check_dependencies():
-    dependencies = ["root-repo", "git", "tsu", "python", "wpa-supplicant", "pixiewps", "iw"]
-    missing_dependencies = []
-    for dependency in dependencies:
-        try:
-            subprocess.run(["which", dependency], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            missing_dependencies.append(dependency)
-    return missing_dependencies
-
-def install_dependencies(dependencies):
-    for dependency in dependencies:
-        if dependency == "root-repo":
-            os.system("sudo apt-get install root-repo -y")
-        elif dependency == "git":
-            os.system("sudo apt-get install git -y")
-        elif dependency == "tsu":
-            os.system("sudo apt-get install tsu -y")
-        elif dependency == "python":
-            os.system("sudo apt-get install python -y")
-        elif dependency == "wpa-supplicant":
-            os.system("sudo apt-get install wpa-supplicant -y")
-        elif dependency == "pixiewps":
-            os.system("sudo apt-get install pixiewps -y")
-        elif dependency == "iw":
-            os.system("sudo apt-get install iw -y")
+CYAN = '\033[96m'
 
 def crack_wifi():
     os.system("sudo python cracker.py -i wlan0 --iface-down -K")
 
 def main_menu():
     banner = f"""
-{CYAN}
+{random.choice(COLORS)}
   ██████  ██▓ ▄▄▄       ███▄ ▄███▓    █     █░ ██▓  █████▒██▓
 ▒██    ▒ ▓██▒▒████▄    ▓██▒▀█▀ ██▒   ▓█░ █ ░█░▓██▒▓██   ▒▓██▒
 ░ ▓██▄   ▒██▒▒██  ▀█▄  ▓██    ▓██░   ▒█░ █ ░█ ▒██▒▒████ ░▒██▒
@@ -60,10 +42,6 @@ def main_menu():
         choice = input(f"{CYAN}Enter your choice: {RESET_COLOR}")
 
         if choice == '1':
-            missing_dependencies = check_dependencies()
-            if missing_dependencies:
-                print("Missing dependencies: ", ", ".join(missing_dependencies))
-                install_dependencies(missing_dependencies)
             os.system('clear') 
             time.sleep(1)
             crack_wifi()
