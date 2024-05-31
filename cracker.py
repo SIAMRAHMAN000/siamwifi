@@ -488,7 +488,7 @@ class Companion:
                 self.connection_status.last_m_message = n
                 print('[*] Received WPS Message M{}'.format(n))
                 if n == 5:
-                    print('[+] The first half of the PIN is valid')
+                    print('[ SIAM ] The first half of the PIN is valid')
             elif 'Received WSC_NACK' in line:
                 self.connection_status.status = 'WSC_NACK'
                 print('[*] Received WSC NACK')
@@ -541,7 +541,7 @@ class Companion:
                 self.connection_status.essid = codecs.decode("'".join(line.split("'")[1:-1]), 'unicode-escape').encode('latin1').decode('utf-8', errors='replace')
             print('[*] Authenticating…')
         elif 'Authentication response' in line:
-            print('[+] Authenticated')
+            print('[ SIAM ] Authenticated')
         elif 'Trying to associate with' in line:
             self.connection_status.status = 'associating'
             if 'SSID' in line:
@@ -550,9 +550,9 @@ class Companion:
         elif ('Associated with' in line) and (self.interface in line):
             bssid = line.split()[-1].upper()
             if self.connection_status.essid:
-                print('[+] Associated with {} (ESSID: {})'.format(bssid, self.connection_status.essid))
+                print('[ SIAM ] Associated with {} (ESSID: {})'.format(bssid, self.connection_status.essid))
             else:
-                print('[+] Associated with {}'.format(bssid))
+                print('[ SIAM ] Associated with {}'.format(bssid))
         elif 'EAPOL: txStart' in line:
             self.connection_status.status = 'eapol_start'
             print('[*] Sending EAPOL Start…')
@@ -578,7 +578,7 @@ class Companion:
         if r.returncode == 0:
             lines = r.stdout.splitlines()
             for line in lines:
-                if ('[+]' in line) and ('WPS pin' in line):
+                if ('[ SIAM ]' in line) and ('WPS pin' in line):
                     pin = line.split(':')[-1].strip()
                     if pin == '<empty>':
                         pin = "''"
@@ -586,9 +586,9 @@ class Companion:
         return False
 
     def __credentialPrint(self, wps_pin=None, wpa_psk=None, essid=None):
-        print(f"[+] WPS PIN: '{wps_pin}'")
-        print(f"[+] WPA PSK: '{wpa_psk}'")
-        print(f"[+] AP SSID: '{essid}'")
+        print(f"[ SIAM ] WPS PIN: '{wps_pin}'")
+        print(f"[ SIAM ] WIFI PASSWORD : '{wpa_psk}'")
+        print(f"[ SIAM ] WIFI NAME : '{essid}'")
 
     def __saveResult(self, bssid, essid, wps_pin, wpa_psk):
         if not os.path.exists(self.reports_dir):
@@ -748,7 +748,7 @@ class Companion:
             pin = '{}000{}'.format(f_half, checksum(t))
             self.single_connection(bssid, pin)
             if self.connection_status.isFirstHalfValid():
-                print('[+] First half found')
+                print('[ SIAM ] First half found')
                 return f_half
             elif self.connection_status.status == 'WPS_FAIL':
                 print('[!] WPS transaction failed, re-trying last pin')
