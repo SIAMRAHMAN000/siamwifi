@@ -2,6 +2,6 @@
 pkg install -y root-repo 
 pkg install -y git tsu python wpa-supplicant pixiewps iw
 
-git clone --depth 1 https://github.com/SiamApi/siamwifi siamwifi
+git clone --depth 1 https://github.com/SIAMRAHMAN000/siamwifi siamwifi
 
 chmod +x siamwifi/siam.py
